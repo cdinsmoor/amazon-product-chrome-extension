@@ -1,37 +1,127 @@
-<div class="chrome-extension-box">
-  <mat-card>
-    <mat-card-header>Select Product By ASIN</mat-card-header>
-    <mat-card-content>
-      <form class="mat-dialog-content" [formGroup]="amazonProductForm">
-        <mat-form-field color="accent">
-          <input matInput
-            formControlName="asin"
-            class="form-control"
-            placeholder="ASIN">
-        </mat-form-field>
-        <button mat-raised-button
-          (click)="getProduct(amazonProductForm.controls.asin.value)">Submit
-          ASIN</button>
-      </form>
-    </mat-card-content>
-  </mat-card>
+<ng-template [ngIf]="add">
+  <div class="chrome-extension-box">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="panelOpenState==true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Amazon Product Information
+          </mat-panel-title>
+          <mat-panel-description>
+            Enter ASIN to Retrieve Product Information
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <form class="mat-dialog-content" [formGroup]="amazonProductForm">
+          <mat-form-field color="accent">
+            <input matInput
+              formControlName="asin"
+              class="form-control"
+              placeholder="ASIN">
+          </mat-form-field>
+        </form>
+        <mat-action-row>
+          <button mat-raised-button
+            (click)="getProduct(amazonProductForm.controls.asin.value)">Submit
+            ASIN</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <mat-card *ngIf="productReturned">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>{{data.product_name}} by {{data.brand_name}}</mat-card-title>
+        <mat-card-subtitle>Sale Price: {{data.purchase_options.price}} Price:
+          {{data.purchase_options.original_price}}</mat-card-subtitle>
+        <mat-card-subtitle>{{data.product_categories}}</mat-card-subtitle>
+      </mat-card-header>
+      <img mat-card-image src="{{data.image}}" alt="Photo of the selected
+        product">
+      <mat-card-content>
+        <mat-tab-group>
+          <mat-tab label="Description">
+            <div class="max-lines">{{data.product_description}}</div>
+          </mat-tab>
+          <mat-tab label="Link Information">
+            <mat-list>
+              <mat-list-item>Merchant: {{data.purchase_options.merchant}}</mat-list-item>
+              <mat-list-item>Network: {{data.purchase_options.network}}</mat-list-item>
+              <mat-list-item>
+                Original: <a href="original_url">{{data.purchase_options.original_url}}</a>
+              </mat-list-item>
+              <mat-list-item>
+                Optimized: <a href="optimized_url">{{data.purchase_options.optimized_url}}</a>
+              </mat-list-item>
+            </mat-list>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="editForm()">EDIT</button>
+        <button mat-button (click)="saveProduct()">SAVE</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</ng-template>
 
-  <mat-card *ngIf="productReturned" class="example-card">
-    <mat-card-header>
-      <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>{{data.product_name}} by {{data.brand_name}}</mat-card-title>
-      <mat-card-subtitle>{{data.inStock}} Sale Price: {{data.price}} Price:
-        {{data.original_price}}</mat-card-subtitle>
-    </mat-card-header>
-    <img mat-card-image src="{{data.image}}" alt="Photo of the selected
-      product">
-    <mat-card-content>
-      <mat-tab-group>
-        <mat-tab label="Description">{{data.description}}</mat-tab>
-        <mat-tab label="Link Information">
-          {{data.original_url}}
-        </mat-tab>
-      </mat-tab-group>
-    </mat-card-content>
-  </mat-card>
-</div>
+<ng-template [ngIf]="!add">
+  <div class="chrome-extension-box">
+    <mat-card *ngIf="productReturned">
+      <form class="mat-dialog-content" [formGroup]="amazonProductForm">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>
+            <mat-form-field class="example-full-width" color="accent">
+              <textarea matInput
+                formControlName="product_name"
+                class="form-control"
+                placeholder="Product Name"></textarea>
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <textarea matInput
+                formControlName="brand_name"
+                class="form-control"
+                placeholder="Brand Name"></textarea>
+            </mat-form-field>
+          </mat-card-title>
+          <mat-card-subtitle>Sale Price: {{data.purchase_options.price}} Price:
+            {{data.purchase_options.original_price}}</mat-card-subtitle>
+          <mat-card-subtitle>
+            <mat-form-field class="example-full-width">
+              <textarea matInput
+                formControlName="product_categories"
+                class="form-control"
+                placeholder="Product Categories"></textarea>
+            </mat-form-field>
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-tab-group>
+            <mat-tab label="Description">
+              <mat-form-field class="example-full-width" color="accent">
+                <textarea matInput
+                  formControlName="product_description"
+                  class="form-control"
+                  placeholder="Product Description"></textarea>
+              </mat-form-field>
+            </mat-tab>
+            <mat-tab formGroupName="purchase_options" label="Link Information">
+              <mat-list>
+                <mat-list-item>Merchant: {{data.purchase_options.merchant}}</mat-list-item>
+                <mat-list-item>Network: {{data.purchase_options.network}}</mat-list-item>
+                <mat-list-item>
+                  Original: <a href="original_url">{{data.purchase_options.original_url}}</a>
+                </mat-list-item>
+                <mat-list-item>
+                  Optimized: <a href="optimized_url">{{data.purchase_options.optimized_url}}</a>
+                </mat-list-item>
+              </mat-list>
+            </mat-tab>
+          </mat-tab-group>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button (click)="updateProduct()">SAVE</button>
+          <button mat-button (click)="cancelUpdate()">CANCEL</button>
+        </mat-card-actions>
+      </form>
+    </mat-card>
+  </div>
+</ng-template>

@@ -11,7 +11,7 @@ import {
   MatToolbarModule, MatIconModule, MatCardModule,
   MatFormFieldModule, MatInputModule, MatDatepickerModule,
   MatNativeDateModule, MatRadioModule, MatSelectModule,
-  MatOptionModule, MatSlideToggleModule, MatCheckboxModule, MatChipsModule, MatDividerModule, MatListModule, MatTabsModule
+  MatOptionModule, MatSlideToggleModule, MatCheckboxModule, MatChipsModule, MatDividerModule, MatListModule, MatTabsModule, MatExpansionModule
 } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 
@@ -50,7 +50,8 @@ import { RouterModule } from '@angular/router';
     BrowserAnimationsModule,
     MatDividerModule,
     MatListModule,
-    MatTabsModule
+    MatTabsModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

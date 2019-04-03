@@ -18,4 +18,8 @@ export class DataService {
   getCustomProduct() {
     return this.http.get<AmazonProduct>(`${this.base_url}/custom-product`);
   }
+
+  saveProduct(data: AmazonProduct) {
+    return this.http.post<AmazonProduct>(`${this.base_url}/saveProduct`, data);
+  }
 }

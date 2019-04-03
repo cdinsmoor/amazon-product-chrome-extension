@@ -1,3 +1,5 @@
+import { AmazonPurchaseOption } from './AmazonPurchaseOption';
+
 export interface AmazonProduct {
     asin: string;
     manufacturer: string,
@@ -6,7 +8,11 @@ export interface AmazonProduct {
     price: string;
     original_price: string; 
     inStock: string; 
-    description: string;
+    product_description: string;
+    product_categories: string; 
     soldBy: string;
     image: string; 
+    original_url: string; 
+    optimized_url: string; 
+    purchase_options: AmazonPurchaseOption; 
 }

@@ -1,6 +1,7 @@
 const express = require('express');
 const Scraper = require("@jonstuebe/scraper");
 const app = express();
+var savedProduct;
 
 // Allow any method from any host and log requests
 app.use((req, res, next) => {
@@ -40,7 +41,7 @@ app.post('/product', (req, res) => {
                 const price = await Scraper.getText("#priceblock_ourprice", page);
                 const original_price = await Scraper.getText("#price > table > tbody > tr:nth-child(1) > td.a-span12.a-color-secondary.a-size-base > span.priceBlockStrikePriceString.a-text-strike", page);
                 const inStock = await Scraper.getText("#availability > span", page);
-                const description = await Scraper.getText("#productDescription > p", page);
+                const product_description = await Scraper.getText("#productDescription > p", page);
                 const soldBy = await Scraper.getText("#comparison_sold_by_row > td.comparison_baseitem_column > span", page);
                 const image = await Scraper.getSrc("#landingImage", page);
                 const original_url = url;
@@ -51,7 +52,7 @@ app.post('/product', (req, res) => {
                     price,
                     original_price,
                     inStock,
-                    description,
+                    product_description,
                     soldBy,
                     image,
                     original_url
@@ -67,6 +68,16 @@ app.post('/product', (req, res) => {
     })();
 });
 
+app.post('/saveProduct', (req, res) => {
+    savedProduct = req.body; 
+    console.log("SAVED PRODUCT: ",savedProduct);
+});
+
+
+app.get('/api/addedProduct', (req, res) => {
+    console.log("Sending data over to other application.");
+    res.send(savedProduct);
+})
 
 // start our server on port 4201
 app.listen(4201, '127.0.0.1', function () {
