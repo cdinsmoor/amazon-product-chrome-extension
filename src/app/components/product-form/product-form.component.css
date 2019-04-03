@@ -1,0 +1,21 @@
+.example-card {
+    max-width: 400px;
+  }
+  
+  .example-header-image {
+    background-size: cover;
+    background-image: url('../../../assets/amazon-logo.jpg');
+  }
+
+  .text {
+    display: block;
+    width: 300px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .chrome-extension-box {
+      width: 400px;
+      height: 400px; 
+  }

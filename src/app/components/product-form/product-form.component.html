@@ -1,0 +1,37 @@
+<div class="chrome-extension-box">
+  <mat-card>
+    <mat-card-header>Select Product By ASIN</mat-card-header>
+    <mat-card-content>
+      <form class="mat-dialog-content" [formGroup]="amazonProductForm">
+        <mat-form-field color="accent">
+          <input matInput
+            formControlName="asin"
+            class="form-control"
+            placeholder="ASIN">
+        </mat-form-field>
+        <button mat-raised-button
+          (click)="getProduct(amazonProductForm.controls.asin.value)">Submit
+          ASIN</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngIf="productReturned" class="example-card">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>{{data.product_name}} by {{data.brand_name}}</mat-card-title>
+      <mat-card-subtitle>{{data.inStock}} Sale Price: {{data.price}} Price:
+        {{data.original_price}}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="{{data.image}}" alt="Photo of the selected
+      product">
+    <mat-card-content>
+      <mat-tab-group>
+        <mat-tab label="Description">{{data.description}}</mat-tab>
+        <mat-tab label="Link Information">
+          {{data.original_url}}
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
+</div>
